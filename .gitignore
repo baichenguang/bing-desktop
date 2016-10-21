@@ -1,13 +1,7 @@
-*/target
-*/logs
-*/.classpath
-*/.project
-*/.settings
-target
 .project
 .settings
+.classpath
 .factorypath
+target
+logs
 build
-.idea
-**/*.iml
-*.bat
