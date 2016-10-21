@@ -1,6 +1,4 @@
 # bing-desktop
-download bing wallpaper
-
-only for windows 7
-
-not test for windows xp, 8, 10
+下载必应图片，并设置为操作系统桌面
+Windows 7下运行正常
+未针对Windows xp, 8, 10做测试
