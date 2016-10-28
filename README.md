@@ -11,9 +11,9 @@
 
 测试：
 
-  Windows 7下运行正常
+  Windows 7, 10 下运行正常
 
-  未针对Windows xp, 8, 10做测试
+  未针对 Windows XP, 8 做测试
 
 配置：
 
