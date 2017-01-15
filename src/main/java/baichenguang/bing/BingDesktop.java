@@ -35,6 +35,7 @@ public class BingDesktop {
     private static final String PROPERTIES = "bing-desktop.properties";
 
     private final String bingSiteWallpaperApi;
+	private final String bingSiteWallpaperImageUrlPrefix;
     private final String bingSiteWallpaperDownloadPath;
 
     private final boolean isSetDesktopWallpaper;
@@ -43,6 +44,7 @@ public class BingDesktop {
         try {
             Configuration config = new PropertiesConfiguration(PROPERTIES);
             this.bingSiteWallpaperApi = config.getString("bing.site.wallpaper.api");
+			this.bingSiteWallpaperImageUrlPrefix = config.getString("bing.site.wallpaper.image.url.prefix");
             this.bingSiteWallpaperDownloadPath = config.getString("bing.site.wallpaper.download.path");
             this.isSetDesktopWallpaper = config.getBoolean("desktop.wallpaper.isset");
         } catch (ConfigurationException e) {
@@ -74,7 +76,7 @@ public class BingDesktop {
             HttpResponse response = httpClientBuilder.build().execute(request);
             String responseJsonString = EntityUtils.toString(response.getEntity());
             JSONObject jsonObject = JSONObject.fromObject(responseJsonString);
-            return jsonObject.getJSONObject("data").getString("url");
+            return this.bingSiteWallpaperImageUrlPrefix + ((JSONObject)jsonObject.getJSONArray("images").get(0)).getString("url");
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new RuntimeException(e);
