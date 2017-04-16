@@ -38,5 +38,12 @@ desktop.wallpaper.isset
 
 - Ubuntu
 
-修改`/etc/rc.local`，在`exit 0`前添加该jar文件的运行命令  
-例如：java -jar /home/desktop/bing-desktop-1.0.jar
+```
+sudo vi /etc/rc.local
+```
+
+在`exit 0`前添加该jar文件的运行命令
+
+```
+sh /home/developer/git/bing-desktop/run-main.sh
+```
