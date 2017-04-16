@@ -102,6 +102,14 @@ public class BingDesktop {
         if (!isSetDesktopWallpaper)
             return;
 
+        String osName = System.getProperty("os.name");
+        if (osName.equals("Windows"))
+            setDesktopWallpaperForWindows(picturePath);
+        else if (osName.equals("Linux"))
+            setDesktopWallpaperForUbuntu(picturePath);
+    }
+
+    private void setDesktopWallpaperForWindows(String picturePath) {
         String bmpPicturePath = this.transformJpgToBmp(picturePath);
 
         Advapi32Util.registrySetStringValue(WinReg.HKEY_CURRENT_USER, "Control Panel\\Desktop", "Wallpaper", bmpPicturePath);
@@ -137,6 +145,15 @@ public class BingDesktop {
         MyUser32 INSTANCE = (MyUser32) Native.loadLibrary("user32", MyUser32.class);
 
         boolean SystemParametersInfoA(int uiAction, int uiParam, String fnm, int fWinIni);
+    }
+
+    private void setDesktopWallpaperForUbuntu(String picturePath) {
+        try {
+            Runtime.getRuntime().exec("gsettings set org.gnome.desktop.background picture-uri file://" + picturePath);
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) {
