@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=bing-desktop
+Exec=/home/developer/git/bing-desktop/run-main.sh
+Type=Application
+Terminal=false
+X-GNOME-Autostart-enabled=true

@@ -38,12 +38,10 @@ desktop.wallpaper.isset
 
 - Ubuntu
 
-```
-sudo vi /etc/rc.local
-```
+运行`run-main.sh`
 
-在`exit 0`前添加该jar文件的运行命令
+## 开机自动运行
 
-```
-sh /home/developer/git/bing-desktop/run-main.sh
-```
+- ubuntu
+
+将`bing-desktop.desktop`文件复制到`~/.config/autostart/`目录中
