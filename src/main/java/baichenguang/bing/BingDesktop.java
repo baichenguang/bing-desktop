@@ -35,7 +35,7 @@ public class BingDesktop {
     private static final String PROPERTIES = "bing-desktop.properties";
 
     private final String bingSiteWallpaperApi;
-	private final String bingSiteWallpaperImageUrlPrefix;
+    private final String bingSiteWallpaperImageUrlPrefix;
     private final String bingSiteWallpaperDownloadPath;
 
     private final boolean isSetDesktopWallpaper;
@@ -44,7 +44,7 @@ public class BingDesktop {
         try {
             Configuration config = new PropertiesConfiguration(PROPERTIES);
             this.bingSiteWallpaperApi = config.getString("bing.site.wallpaper.api");
-			this.bingSiteWallpaperImageUrlPrefix = config.getString("bing.site.wallpaper.image.url.prefix");
+            this.bingSiteWallpaperImageUrlPrefix = config.getString("bing.site.wallpaper.image.url.prefix");
             this.bingSiteWallpaperDownloadPath = config.getString("bing.site.wallpaper.download.path");
             this.isSetDesktopWallpaper = config.getBoolean("desktop.wallpaper.isset");
         } catch (ConfigurationException e) {
@@ -76,7 +76,7 @@ public class BingDesktop {
             HttpResponse response = httpClientBuilder.build().execute(request);
             String responseJsonString = EntityUtils.toString(response.getEntity());
             JSONObject jsonObject = JSONObject.fromObject(responseJsonString);
-            return this.bingSiteWallpaperImageUrlPrefix + ((JSONObject)jsonObject.getJSONArray("images").get(0)).getString("url");
+            return this.bingSiteWallpaperImageUrlPrefix + ((JSONObject) jsonObject.getJSONArray("images").get(0)).getString("url");
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new RuntimeException(e);
@@ -84,9 +84,12 @@ public class BingDesktop {
     }
 
     private String downloadPicture(String pictureUrl) {
-        String formatedDate = DateFormatUtils.format(Calendar.getInstance(), "yyyy-MM-dd");
-        String filePath = this.bingSiteWallpaperDownloadPath + "BingWallpaper-" + formatedDate + ".jpg";
+        String formattedDate = DateFormatUtils.format(Calendar.getInstance(), "yyyy-MM-dd");
+        String filePath = this.bingSiteWallpaperDownloadPath + "BingWallpaper-" + formattedDate + ".jpg";
         File picture = new File(filePath);
+        if (picture.exists())
+            return filePath;
+
         try {
             URL url = new URL(pictureUrl);
             FileUtils.copyURLToFile(url, picture);
