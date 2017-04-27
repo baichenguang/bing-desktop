@@ -111,13 +111,16 @@ public class BingDesktop {
             return;
         }
 
-        String osName = System.getProperty("os.name");
-        if (osName.equals("Windows"))
-            setDesktopWallpaperForWindows(picturePath);
-        else if (osName.equals("Linux"))
-            setDesktopWallpaperForUbuntu(picturePath);
-
-        LOG.warn("Unknow OS type.");
+        switch (System.getProperty("os.name")) {
+            case "Windows":
+                setDesktopWallpaperForWindows(picturePath);
+                break;
+            case "Linux":
+                setDesktopWallpaperForUbuntu(picturePath);
+                break;
+            default:
+                LOG.warn("Unknow OS type.");
+        }
     }
 
     private void setDesktopWallpaperForWindows(String picturePath) {
