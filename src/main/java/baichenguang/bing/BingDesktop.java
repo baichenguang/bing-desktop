@@ -76,7 +76,9 @@ public class BingDesktop {
             HttpResponse response = httpClientBuilder.build().execute(request);
             String responseJsonString = EntityUtils.toString(response.getEntity());
             JSONObject jsonObject = JSONObject.fromObject(responseJsonString);
-            return this.bingSiteWallpaperImageUrlPrefix + ((JSONObject) jsonObject.getJSONArray("images").get(0)).getString("url");
+            String pictureUrl = this.bingSiteWallpaperImageUrlPrefix + ((JSONObject) jsonObject.getJSONArray("images").get(0)).getString("url");
+            LOG.info("pictureUrl: " + pictureUrl);
+            return pictureUrl;
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw new RuntimeException(e);
@@ -87,13 +89,15 @@ public class BingDesktop {
         String formattedDate = DateFormatUtils.format(Calendar.getInstance(), "yyyy-MM-dd");
         String filePath = this.bingSiteWallpaperDownloadPath + "BingWallpaper-" + formattedDate + ".jpg";
         File picture = new File(filePath);
-        if (picture.exists())
+        if (picture.exists()) {
+            LOG.info("File is exist, filePath: " + filePath);
             return filePath;
+        }
 
         try {
             URL url = new URL(pictureUrl);
             FileUtils.copyURLToFile(url, picture);
-            LOG.info("Download success: " + filePath);
+            LOG.info("Download success, filePath: " + filePath);
             return filePath;
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
@@ -102,17 +106,22 @@ public class BingDesktop {
     }
 
     private void setDesktopWallpaper(String picturePath) {
-        if (!isSetDesktopWallpaper)
+        if (!isSetDesktopWallpaper) {
+            LOG.info("Don't need set desktop wallpaper.");
             return;
+        }
 
         String osName = System.getProperty("os.name");
         if (osName.equals("Windows"))
             setDesktopWallpaperForWindows(picturePath);
         else if (osName.equals("Linux"))
             setDesktopWallpaperForUbuntu(picturePath);
+
+        LOG.warn("Unknow OS type.");
     }
 
     private void setDesktopWallpaperForWindows(String picturePath) {
+        LOG.info("Set desktop wallpaper for windows, picturePath: " + picturePath);
         String bmpPicturePath = this.transformJpgToBmp(picturePath);
 
         Advapi32Util.registrySetStringValue(WinReg.HKEY_CURRENT_USER, "Control Panel\\Desktop", "Wallpaper", bmpPicturePath);
@@ -151,6 +160,7 @@ public class BingDesktop {
     }
 
     private void setDesktopWallpaperForUbuntu(String picturePath) {
+        LOG.info("Set desktop wallpaper for ubuntu, picturePath: " + picturePath);
         try {
             Runtime.getRuntime().exec("gsettings set org.gnome.desktop.background picture-uri file://" + picturePath);
         } catch (IOException e) {
