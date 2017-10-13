@@ -9,6 +9,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,6 +25,7 @@ import javax.net.ssl.X509TrustManager;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
@@ -165,7 +167,10 @@ public class BingDesktop {
     private void setDesktopWallpaperForUbuntu(String picturePath) {
         LOG.info("Set desktop wallpaper for ubuntu, picturePath: " + picturePath);
         try {
-            Runtime.getRuntime().exec("gsettings set org.gnome.desktop.background picture-uri file://" + picturePath);
+            Process process = Runtime.getRuntime().exec("gsettings set org.gnome.desktop.background picture-uri file://" + picturePath);
+            String result = "";
+            IOUtils.write(result, process.getOutputStream());
+            LOG.info(result);
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
             throw new RuntimeException(e);
