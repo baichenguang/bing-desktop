@@ -120,8 +120,11 @@ public class BingDesktop {
             case "Linux":
                 setDesktopWallpaperForUbuntu(picturePath);
                 break;
+            case "Mac OS X":
+                setDesktopWallpaperForMac(picturePath);
+                break;
             default:
-                LOG.warn("Unknow OS type.");
+                LOG.warn("Unknown OS type.");
         }
     }
 
@@ -177,11 +180,22 @@ public class BingDesktop {
         }
     }
 
+    private void setDesktopWallpaperForMac(String picturePath) {
+        LOG.info("Set desktop wallpaper for mac, picturePath: " + picturePath);
+        try {
+//            String command = "osascript -e \"tell application \\\"Finder\\\" to set desktop picture to POSIX file \\\"" + picturePath + "\\\"\"";
+            String command = "sh bing-desktop.sh " + picturePath;
+            Runtime.getRuntime().exec(command);
+        } catch (IOException e) {
+            LOG.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
         BingDesktop bingDesktop = new BingDesktop();
         String pictureUrl = bingDesktop.pictureUrl();
         String picturePath = bingDesktop.downloadPicture(pictureUrl);
         bingDesktop.setDesktopWallpaper(picturePath);
     }
-
 }
