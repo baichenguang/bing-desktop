@@ -114,7 +114,7 @@ public class BingDesktop {
         }
 
         switch (System.getProperty("os.name")) {
-            case "Windows":
+            case "Windows 10":
                 setDesktopWallpaperForWindows(picturePath);
                 break;
             case "Linux":
